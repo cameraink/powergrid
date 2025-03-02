@@ -7,6 +7,9 @@
 
 PowerGrid is a **high-performance Python library** for looking up **Transmission System Operators (TSOs)** based on **ISO country-region codes**.
 
+> **📝 Note:** This version currently supports **French region codes only**.  
+> 🎯 **Contributors are welcome** to extend it to other countries!  
+
 ## 🚀 Features
 
 ✅ **Blazing-fast in-memory lookup**  
@@ -14,9 +17,9 @@ PowerGrid is a **high-performance Python library** for looking up **Transmission
 - **Region code** (ISO 3166-2)
 - **TSO ID**
 - **ENTSO-E Code**
+
 ✅ **Case-insensitive searches**  
-✅ **Optimized for REST APIs and large-scale queries**  
-✅ **Multi-threaded for high-performance lookups**  
+✅ **Optimized for REST APIs and large-scale queries**
 
 ---
 
@@ -28,48 +31,29 @@ PowerGrid is available on PyPI. Install it with:
 uv pip install powergrid
 ```
 
-## 📖 Usage
-### Initialize the Finder
+## 🛠 API Reference
+
+### TsoFinder
+
+#### Initialize the Finder
 ```python
 from tso_finder import TsoFinder
 finder = TsoFinder()
 ```
-### Lookup by Region Code
+
+#### Lookup by Region Code
 ```python
 print(finder.by_region("FR-IDF"))  # Output: "TSO_FR_001"
 ```
 
-### Lookup by TSO ID
+#### Lookup by TSO ID
 ```python
 print(finder.by_tsoid("TSO_FR_001"))  # Output: ["FR-IDF", "FR-ARA", ...]
 ```
 
-### Lookup by ENTSO-E Code
+#### Lookup by ENTSO-E Code
 ```python
 print(finder.by_entsoe("10YFR-RTE------C"))  # Output: <Tso object for RTE>
-```
-
-## 🛠 API Reference
-### TsoFinder
-```python
-finder = TsoFinder()
-```
-- Loads TSO data from ../data/tso_data.json
-- Precomputes reverse lookup mappings for fast queries.
-
-Finds the TSO ID for a given region.
-```python
-finder.by_region("FR-IDF")  # "TSO_FR_001"
-```
-
-Finds all regions managed by a given TSO.
-```python
-finder.by_tsoid("TSO_FR_001")  # ["FR-IDF", "FR-ARA", ...]
-```
-
-Finds a TSO object using an ENTSO-E code.
-```python
-finder.by_entsoe("10YFR-RTE------C")
 ```
 
 ## 🏗 Contributing

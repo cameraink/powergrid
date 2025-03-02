@@ -1,9 +1,12 @@
+import json
+
+# Shared data source path for both Tso and TsoFinder
+TSO_DATA_FILE = "../data/tso_data.json"
+
 class Tso:
     """Represents a Transmission System Operator (TSO).
 
-    A TSO manages electricity transmission networks within specific regions.
-    This class provides structured access to TSO data, including operational
-    status, capacity, and region coverage.
+    This class provides structured access to TSO data, allowing retrieval by ID.
 
     Attributes:
         tso_id (str): Unique internal identifier for the TSO.
@@ -19,48 +22,61 @@ class Tso:
         legal_entity_name (str): Legal entity name of the organization.
     """
 
-    def __init__(self, tso_id: str, data: dict):
-        """Initializes a TSO instance with provided data.
+    @staticmethod
+    def _load_tso_data() -> dict:
+        """Loads the TSO data from the shared JSON file.
+
+        Returns:
+            dict: Parsed JSON content containing TSO details.
+
+        Raises:
+            RuntimeError: If the JSON file is missing or contains invalid data.
+        """
+        try:
+            with open(TSO_DATA_FILE, "r", encoding="utf-8") as f:
+                return json.load(f).get("tso_details", {})
+        except FileNotFoundError:
+            raise RuntimeError(f"Error: File '{TSO_DATA_FILE}' not found.")
+        except json.JSONDecodeError:
+            raise RuntimeError(f"Error: Invalid JSON format in '{TSO_DATA_FILE}'.")
+
+    def __init__(self, tso_id: str):
+        """Initializes a TSO instance by retrieving data from the JSON source.
 
         Args:
             tso_id (str): Unique identifier of the TSO.
-            data (dict): Dictionary containing the TSO details.
+
+        Raises:
+            ValueError: If the TSO ID does not exist in the dataset.
 
         Example:
-            >>> data = {
-            ...     "entsoe_code": "10YFR-RTE------C",
-            ...     "short_name": "RTE",
-            ...     "name": "Réseau de Transport d'Électricité",
-            ...     "country": "FR",
-            ...     "operational_status": "active",
-            ...     "capacity_mw": 105000,
-            ...     "grid_coverage": "national",
-            ...     "website": "https://www.rte-france.com",
-            ...     "contact_info": "contact@rte-france.com",
-            ...     "legal_entity_name": "RTE Réseau de Transport d'Électricité"
-            ... }
-            >>> tso = Tso("TSO_FR_001", data)
+            >>> tso = Tso("TSO_FR_001")
         """
+        tso_data = self._load_tso_data().get(tso_id)
+
+        if not tso_data:
+            raise ValueError(f"TSO ID '{tso_id}' not found in dataset.")
+
         self.tso_id = tso_id
-        self.entsoe_code = data.get("entsoe_code")
-        self.short_name = data.get("short_name")
-        self.name = data.get("name")
-        self.country = data.get("country")
-        self.operational_status = data.get("operational_status")
-        self.capacity_mw = data.get("capacity_mw")
-        self.grid_coverage = data.get("grid_coverage")
-        self.website = data.get("website")
-        self.contact_info = data.get("contact_info")
-        self.legal_entity_name = data.get("legal_entity_name")
+        self.entsoe_code = tso_data.get("entsoe_code")
+        self.short_name = tso_data.get("short_name")
+        self.name = tso_data.get("name")
+        self.country = tso_data.get("country")
+        self.operational_status = tso_data.get("operational_status")
+        self.capacity_mw = tso_data.get("capacity_mw")
+        self.grid_coverage = tso_data.get("grid_coverage")
+        self.website = tso_data.get("website")
+        self.contact_info = tso_data.get("contact_info")
+        self.legal_entity_name = tso_data.get("legal_entity_name")
 
     def __call__(self) -> str:
-        """Allows the object to be called directly, returning the TSO ID.
+        """Returns the TSO ID when called directly.
 
         Returns:
             str: The unique TSO identifier.
 
         Example:
-            >>> tso = Tso("TSO_FR_001", {})
+            >>> tso = Tso("TSO_FR_001")
             >>> tso()
             'TSO_FR_001'
         """
@@ -73,7 +89,7 @@ class Tso:
             str: A formatted string including the TSO ID and short name.
 
         Example:
-            >>> tso = Tso("TSO_FR_001", {"short_name": "RTE"})
+            >>> tso = Tso("TSO_FR_001")
             >>> str(tso)
             'TSO_FR_001 (RTE)'
         """
@@ -86,7 +102,7 @@ class Tso:
             str: A string with the TSO ID, name, and key attributes for debugging.
 
         Example:
-            >>> tso = Tso("TSO_FR_001", {"name": "Réseau de Transport d'Électricité"})
+            >>> tso = Tso("TSO_FR_001")
             >>> repr(tso)
             "Tso(tso_id='TSO_FR_001', name='Réseau de Transport d'Électricité')"
         """

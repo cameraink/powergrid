@@ -1,10 +1,7 @@
 import json
 import threading
 from typing import Optional, Dict, List
-from .tso import Tso
-
-# Define a constant for the JSON data file path
-TSO_DATA_FILE = "../data/tso_data.json"
+from .tso import Tso, TSO_DATA_FILE
 
 class TsoFinder:
     """A high-performance lookup utility for Transmission System Operators (TSOs).
@@ -20,12 +17,11 @@ class TsoFinder:
         region_to_tso (dict): Maps region codes (lowercase) to TSO IDs.
         tso_to_regions (dict): Maps TSO IDs to a list of associated region codes.
         entsoe_to_tso (dict): Maps ENTSO-E codes (lowercase) to TSO IDs.
-        tso_details (dict): Stores TSO details, mapped by TSO ID.
         lock (threading.Lock): Ensures thread safety when accessing lookup data.
     """
 
     def __init__(self):
-        """Initializes the TsoFinder instance and loads data from the default JSON file.
+        """Initializes the TsoFinder instance and loads data from the shared JSON file.
 
         Raises:
             RuntimeError: If the JSON file is missing or contains malformed data.
@@ -34,7 +30,6 @@ class TsoFinder:
         self.region_to_tso: Dict[str, str] = {}
         self.tso_to_regions: Dict[str, List[str]] = {}
         self.entsoe_to_tso: Dict[str, str] = {}
-        self.tso_details: Dict[str, Tso] = {}
 
         self._load_data()
 
@@ -55,7 +50,7 @@ class TsoFinder:
             self.region_to_tso = {region.lower(): tso_id for region, tso_id in data.get("region_to_tso", {}).items()}
 
             for tso_id, details in data.get("tso_details", {}).items():
-                self.tso_details[tso_id] = Tso(tso_id, details)
+                # Use the new Tso constructor to fetch details dynamically
                 self.entsoe_to_tso[details["entsoe_code"].lower()] = tso_id
 
                 # Populate tso_to_regions mapping
@@ -71,8 +66,8 @@ class TsoFinder:
         except json.JSONDecodeError:
             raise RuntimeError(f"Error: Invalid JSON format in '{TSO_DATA_FILE}'.")
 
-    def by_region(self, region_code: str) -> Optional[str]:
-        """Retrieves the TSO ID for a given region code.
+    def by_region(self, region_code: str) -> Optional[Tso]:
+        """Retrieves the TSO object for a given region code.
 
         This lookup is case-insensitive.
 
@@ -80,14 +75,15 @@ class TsoFinder:
             region_code (str): The ISO 3166-2 region code.
 
         Returns:
-            Optional[str]: The corresponding TSO ID if found, otherwise None.
+            Optional[Tso]: The corresponding Tso object if found, otherwise None.
 
         Example:
             >>> finder = TsoFinder()
             >>> finder.by_region("FR-IDF")
-            'TSO_FR_001'
+            Tso(tso_id='TSO_FR_001', name='Réseau de Transport d'Électricité')
         """
-        return self.region_to_tso.get(region_code.lower())
+        tso_id = self.region_to_tso.get(region_code.lower())
+        return Tso(tso_id) if tso_id else None
 
     def by_tsoid(self, tso_id: str) -> Optional[List[str]]:
         """Retrieves the list of region codes associated with a given TSO ID.
@@ -106,7 +102,7 @@ class TsoFinder:
         return self.tso_to_regions.get(tso_id, None)
 
     def by_entsoe(self, entsoe_code: str) -> Optional[Tso]:
-        """Retrieves TSO details using an ENTSO-E code.
+        """Retrieves a TSO object using an ENTSO-E code.
 
         This lookup is case-insensitive.
 
@@ -121,4 +117,5 @@ class TsoFinder:
             >>> finder.by_entsoe("10YFR-RTE------C")
             Tso(tso_id='TSO_FR_001', name='Réseau de Transport d'Électricité')
         """
-        return self.entsoe_to_tso.get(entsoe_code.lower())
+        tso_id = self.entsoe_to_tso.get(entsoe_code.lower())
+        return Tso(tso_id) if tso_id else None

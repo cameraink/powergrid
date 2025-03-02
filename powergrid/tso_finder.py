@@ -7,10 +7,29 @@ from .tso import Tso
 TSO_DATA_FILE = "../data/tso_data.json"
 
 class TsoFinder:
-    """Provides lookup functions for Transmission System Operators (TSOs)."""
+    """A high-performance lookup utility for Transmission System Operators (TSOs).
+
+    This class provides efficient lookup methods for retrieving TSO information based on:
+    - Region codes (ISO 3166-2)
+    - TSO IDs
+    - ENTSO-E codes
+
+    The data is preloaded into memory for fast access and supports case-insensitive searches.
+
+    Attributes:
+        region_to_tso (dict): Maps region codes (lowercase) to TSO IDs.
+        tso_to_regions (dict): Maps TSO IDs to a list of associated region codes.
+        entsoe_to_tso (dict): Maps ENTSO-E codes (lowercase) to TSO IDs.
+        tso_details (dict): Stores TSO details, mapped by TSO ID.
+        lock (threading.Lock): Ensures thread safety when accessing lookup data.
+    """
 
     def __init__(self):
-        """Initializes the TsoFinder and loads data from the default JSON file."""
+        """Initializes the TsoFinder instance and loads data from the default JSON file.
+
+        Raises:
+            RuntimeError: If the JSON file is missing or contains malformed data.
+        """
         self.lock = threading.Lock()
         self.region_to_tso: Dict[str, str] = {}
         self.tso_to_regions: Dict[str, List[str]] = {}
@@ -20,7 +39,14 @@ class TsoFinder:
         self._load_data()
 
     def _load_data(self):
-        """Loads TSO data from the default JSON file and precomputes reverse lookup mappings."""
+        """Loads TSO data from the JSON file and precomputes reverse lookup mappings.
+
+        This method reads the JSON file specified in `TSO_DATA_FILE` and populates the lookup
+        dictionaries for efficient searches.
+
+        Raises:
+            RuntimeError: If the JSON file cannot be loaded or contains invalid data.
+        """
         try:
             with open(TSO_DATA_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
@@ -46,14 +72,53 @@ class TsoFinder:
             raise RuntimeError(f"Error: Invalid JSON format in '{TSO_DATA_FILE}'.")
 
     def by_region(self, region_code: str) -> Optional[str]:
-        """Finds the TSO ID for a given region code (case-insensitive)."""
+        """Retrieves the TSO ID for a given region code.
+
+        This lookup is case-insensitive.
+
+        Args:
+            region_code (str): The ISO 3166-2 region code.
+
+        Returns:
+            Optional[str]: The corresponding TSO ID if found, otherwise None.
+
+        Example:
+            >>> finder = TsoFinder()
+            >>> finder.by_region("FR-IDF")
+            'TSO_FR_001'
+        """
         return self.region_to_tso.get(region_code.lower())
 
     def by_tsoid(self, tso_id: str) -> Optional[List[str]]:
-        """Finds all regions managed by a given TSO ID."""
+        """Retrieves the list of region codes associated with a given TSO ID.
+
+        Args:
+            tso_id (str): The unique TSO identifier.
+
+        Returns:
+            Optional[List[str]]: A list of region codes if the TSO exists, otherwise None.
+
+        Example:
+            >>> finder = TsoFinder()
+            >>> finder.by_tsoid("TSO_FR_001")
+            ['FR-IDF', 'FR-ARA', 'FR-PAC']
+        """
         return self.tso_to_regions.get(tso_id, None)
 
     def by_entsoe(self, entsoe_code: str) -> Optional[Tso]:
-        """Finds TSO details by ENTSO-E code (case-insensitive)."""
-        tso_id = self.entsoe_to_tso.get(entsoe_code.lower())
-        return self.tso_details.get(tso_id, None)
+        """Retrieves TSO details using an ENTSO-E code.
+
+        This lookup is case-insensitive.
+
+        Args:
+            entsoe_code (str): The ENTSO-E identifier.
+
+        Returns:
+            Optional[Tso]: A Tso object containing details if found, otherwise None.
+
+        Example:
+            >>> finder = TsoFinder()
+            >>> finder.by_entsoe("10YFR-RTE------C")
+            Tso(tso_id='TSO_FR_001', name='Réseau de Transport d'Électricité')
+        """
+        return self.entsoe_to_tso.get(entsoe_code.lower())

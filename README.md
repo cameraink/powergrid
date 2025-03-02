@@ -3,7 +3,6 @@
 [![PyPI Version](https://img.shields.io/pypi/v/powergrid.svg)](https://pypi.org/project/powergrid/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python Versions](https://img.shields.io/pypi/pyversions/powergrid.svg)](https://pypi.org/project/powergrid/)
-[![Tests](https://github.com/cameraink/powergrid/actions/workflows/tests.yml/badge.svg)](https://github.com/cameraink/powergrid/actions)
 
 PowerGrid is a **high-performance Python library** for looking up **Transmission System Operators (TSOs)** based on **ISO country-region codes**.
 

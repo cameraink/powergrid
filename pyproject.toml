@@ -1,7 +1,7 @@
 [project]
 
 name = "powergrid"
-version = "0.1.0"
+version = "0.2.0"
 description = "A high-performance lookup library for Transmission System Operators (TSOs)"
 readme = "README.md"
 license = { file = "LICENSE" }

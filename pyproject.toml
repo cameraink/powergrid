@@ -1,0 +1,42 @@
+[project]
+
+name = "powergrid"
+version = "0.1.0"
+description = "A high-performance lookup library for Transmission System Operators (TSOs)"
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Guillaume Dion"}]
+
+dependencies = ["jsonschema"]
+requires-python = ">=3.10"
+
+classifiers = [
+  # How mature is this project? Common values are
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 4 - Beta",
+
+  # Indicate who your project is intended for
+  "Intended Audience :: Developers",
+
+  # Specify the Python versions you support here.
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage = "https://github.com/cameraink/powergrid"
+Repository = "https://github.com/cameraink/powergrid"
+
+[tool.ruff]
+line-length = 108
+target-version = "py310"
+select = ["E", "F", "W", "C90"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -1,0 +1,39 @@
+{
+    "region_to_tso": {
+        "FR-ARA": "TSO_FR_001",
+        "FR-BFC": "TSO_FR_001",
+        "FR-BRE": "TSO_FR_001",
+        "FR-CVL": "TSO_FR_001",
+        "FR-GES": "TSO_FR_001",
+        "FR-HDF": "TSO_FR_001",
+        "FR-IDF": "TSO_FR_001",
+        "FR-NOR": "TSO_FR_001",
+        "FR-NAQ": "TSO_FR_001",
+        "FR-OCC": "TSO_FR_001",
+        "FR-PAC": "TSO_FR_001",
+        "FR-PDL": "TSO_FR_001",
+        "FR-COR": "TSO_FR_001",
+        "FR-GUA": "TSO_FR_001",
+        "FR-MQ": "TSO_FR_001",
+        "FR-LRE": "TSO_FR_001",
+        "FR-MAY": "TSO_FR_001",
+        "FR-NC": "TSO_FR_001",
+        "FR-PF": "TSO_FR_001",
+        "FR-WF": "TSO_FR_001"
+    },
+    "tso_details": {
+        "TSO_FR_001": {
+            "id": "TSO_FR_001",
+            "entsoe_code": "10YFR-RTE------C",
+            "short_name": "RTE",
+            "name": "Réseau de Transport d'Électricité",
+            "country": "FR",
+            "operational_status": "active",
+            "capacity_mw": 105000,
+            "grid_coverage": "national",
+            "website": "https://www.rte-france.com",
+            "contact_info": "contact@rte-france.com",
+            "legal_entity_name": "RTE Réseau de Transport d'Électricité"
+        }
+    }
+}

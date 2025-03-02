@@ -1,7 +1,9 @@
 import json
 import threading
 from typing import Optional, Dict, List
-from .tso import Tso, TSO_DATA_FILE
+
+from .tso import Tso
+from .constants import TSO_DATA_FILE
 
 class TsoFinder:
     """A high-performance lookup utility for Transmission System Operators (TSOs).

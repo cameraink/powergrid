@@ -1,7 +1,6 @@
 import json
 
-# Shared data source path for both Tso and TsoFinder
-TSO_DATA_FILE = "../data/tso_data.json"
+from .constants import TSO_DATA_FILE
 
 class Tso:
     """Represents a Transmission System Operator (TSO).

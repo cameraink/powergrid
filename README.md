@@ -10,6 +10,11 @@ PowerGrid is a **high-performance Python library** for looking up **Transmission
 > **📝 Note:** This version currently supports **French region codes only**.  
 > 🎯 **Contributors are welcome** to extend it to other countries!  
 
+> **📝 Version 0.2.0:**
+> - ✅ **Now returns full `Tso` objects** instead of just IDs.
+> - ✅ **Uses a shared `constants.py` file** for managing data source paths.
+> - ✅ **Case-insensitive searches for region codes & ENTSO-E codes.**
+
 ## 🚀 Features
 
 ✅ **Blazing-fast in-memory lookup**  
@@ -65,7 +70,8 @@ To contribute:
 3. Submit a pull request.
 
 ## 📜 License
-PowerGrid is MIT Licensed. See the LICENSE file for details.
+PowerGrid is MIT Licensed.
+See the LICENSE file for details.
 
 ## 💡 Why Use PowerGrid?
 - Fast: Precomputes mappings for instant lookups.

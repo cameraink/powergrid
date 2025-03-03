@@ -25,12 +25,12 @@ PowerGrid is a **high-performance Python library** for looking up **Transmission
 ✅ **Case-insensitive searches**  
 ✅ **Optimized for REST APIs and large-scale queries**
 
----
-
 ## 📦 Installation
 
 ### **Using PyPI**
-PowerGrid is available on PyPI. Install it with:
+PowerGrid is available on PyPI at https://pypi.org/project/powergrid/
+
+Install it with:
 ```sh
 uv pip install powergrid
 ```
@@ -61,7 +61,8 @@ print(finder.by_entsoe("10YFR-RTE------C"))  # Output: <Tso object for RTE>
 ```
 
 ## 🏗 Contributing
-👥 We welcome contributions!
+We welcome contributions!
+
 To contribute:
 
 1. Fork the repo and create a branch.
@@ -70,6 +71,7 @@ To contribute:
 
 ## 📜 License
 PowerGrid is MIT Licensed.
+
 See the LICENSE file for details.
 
 ## 💡 Why Use PowerGrid?

@@ -9,7 +9,11 @@ PowerGrid is a **high-performance Python library** for looking up **Transmission
 > **📝 Note:** This version currently supports **French region codes only**.  
 > 🎯 **Contributors are welcome** to extend it to other countries!  
 
-> **📝 Version 0.2.0:**
+
+> 📝 **Version 0.2.1:**
+> - ✅ **Now handle TSO for Germany and Corsica.
+> 
+> 📝 **Version 0.2.0:**
 > - ✅ **Now returns full `Tso` objects** instead of just IDs.
 > - ✅ **Uses a shared `constants.py` file** for managing data source paths.
 > - ✅ **Case-insensitive searches for region codes & ENTSO-E codes.**

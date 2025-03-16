@@ -14,6 +14,13 @@ def test_by_region_case_insensitive(finder):
     assert isinstance(tso, Tso)
     assert tso.tso_id == "TSO_FR_001"
 
+def test_by_region_without_entsoe(finder):
+    """Test lookup by region code without entseo code, returning a Tso object."""
+    region_code = "fr-cor"  # Lowercase input
+    tso = finder.by_region(region_code)
+    assert isinstance(tso, Tso)
+    assert tso.tso_id == "TSO_FR_COR"
+
 def test_invalid_region_code(finder):
     """Test lookup with an invalid region code should return None."""
     tso = finder.by_region("INVALID-REGION")
